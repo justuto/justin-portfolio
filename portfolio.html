@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Justin Terzulum — Data Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3F0E7;
+    --paper-alt:#EBE7DA;
+    --ink:#182338;
+    --ink-soft:#4A5568;
+    --green:#1E6B45;
+    --green-soft:#E4EEE6;
+    --amber:#D99A2B;
+    --amber-soft:#FBF0DA;
+    --red:#B23B3B;
+    --red-soft:#F7E7E4;
+    --line:#D6D0BF;
+    --radius:2px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  h1,h2,h3{font-family:'Spectral',serif;margin:0;font-weight:600;color:var(--ink);}
+  a{color:inherit;}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(243,240,231,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;padding-top:16px;padding-bottom:16px;}
+  .nav-mark{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:14px;letter-spacing:0.02em;}
+  .nav-links{display:flex;gap:28px;font-family:'IBM Plex Mono',monospace;font-size:13px;}
+  .nav-links a{text-decoration:none;color:var(--ink-soft);border-bottom:1px solid transparent;padding-bottom:2px;transition:border-color .15s;}
+  .nav-links a:hover{border-color:var(--green);color:var(--ink);}
+  @media (max-width:640px){.nav-links{display:none;}}
+
+  /* ---------- HERO ---------- */
+  header.hero{padding:88px 0 64px;border-bottom:1px solid var(--line);}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:0.09em;
+    color:var(--green);text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:22px;height:1px;background:var(--green);display:inline-block;}
+  h1.headline{font-size:clamp(34px,5vw,54px);line-height:1.12;letter-spacing:-0.01em;max-width:14ch;}
+  h1.headline em{font-style:italic;color:var(--green);}
+  .sub{font-size:17px;line-height:1.65;color:var(--ink-soft);max-width:52ch;margin-top:22px;}
+  .cta-row{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap;}
+  .btn{
+    font-family:'IBM Plex Mono',monospace;font-size:13px;padding:12px 20px;border-radius:var(--radius);
+    text-decoration:none;display:inline-flex;align-items:center;gap:8px;border:1px solid var(--ink);
+    transition:transform .15s ease, background .15s ease;
+  }
+  .btn-solid{background:var(--ink);color:var(--paper);}
+  .btn-solid:hover{transform:translateY(-1px);background:var(--green);border-color:var(--green);}
+  .btn-outline{background:transparent;color:var(--ink);}
+  .btn-outline:hover{transform:translateY(-1px);background:var(--paper-alt);}
+
+  /* ---------- SIGNATURE: LEDGER STRIP ---------- */
+  .ledger{
+    margin-top:56px;border:1px solid var(--line);background:#fff;border-radius:var(--radius);
+    overflow:hidden;box-shadow:0 1px 0 var(--line);
+  }
+  .ledger-head{
+    display:grid;grid-template-columns:1.4fr 1fr 1fr 90px;
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;color:var(--ink-soft);
+    text-transform:uppercase;background:var(--paper-alt);border-bottom:1px solid var(--line);
+  }
+  .ledger-head div{padding:10px 16px;}
+  .ledger-row{
+    display:grid;grid-template-columns:1.4fr 1fr 1fr 90px;
+    font-family:'IBM Plex Mono',monospace;font-size:13.5px;
+    border-bottom:1px solid var(--line);
+  }
+  .ledger-row:last-child{border-bottom:none;}
+  .ledger-row div{padding:13px 16px;position:relative;overflow:hidden;}
+  .cell-before{color:var(--red);}
+  .cell-after{color:var(--green);opacity:0;transform:translateY(4px);transition:opacity .4s ease, transform .4s ease;}
+  .ledger-row.done .cell-before{display:none;}
+  .ledger-row.done .cell-after{opacity:1;transform:translateY(0);}
+  .status-pill{
+    font-size:10.5px;padding:3px 9px;border-radius:20px;letter-spacing:0.04em;font-weight:500;
+    background:var(--red-soft);color:var(--red);display:inline-block;
+  }
+  .ledger-row.done .status-pill{background:var(--green-soft);color:var(--green);}
+  .status-pill::before{content:"FLAGGED";}
+  .ledger-row.done .status-pill::before{content:"CLEANED";}
+  .ledger-row.review .cell-after{color:var(--amber);}
+  .ledger-row.review.done .status-pill{background:var(--amber-soft);color:#8a6108;}
+  .ledger-row.review.done .status-pill::before{content:"FOR REVIEW";}
+
+  /* ---------- SKILLS STRIP ---------- */
+  .skills{padding:40px 0;border-bottom:1px solid var(--line);}
+  .skills-row{display:flex;flex-wrap:wrap;gap:12px;}
+  .skill-tag{
+    font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:8px 14px;border:1px solid var(--line);
+    border-radius:20px;color:var(--ink-soft);background:#fff;
+  }
+
+  /* ---------- SECTION HEADERS ---------- */
+  section{padding:76px 0;border-bottom:1px solid var(--line);}
+  .sec-head{margin-bottom:44px;max-width:60ch;}
+  .sec-head h2{font-size:clamp(26px,3.4vw,34px);margin-top:8px;}
+
+  /* ---------- APPROACH ---------- */
+  .approach-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
+  .approach-item{padding:26px 22px;border-right:1px solid var(--line);background:#fff;}
+  .approach-item:last-child{border-right:none;}
+  .approach-num{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--amber);letter-spacing:0.05em;}
+  .approach-item h3{font-size:17px;margin-top:10px;font-weight:600;}
+  .approach-item p{font-size:13.5px;color:var(--ink-soft);line-height:1.55;margin-top:8px;}
+  @media (max-width:800px){.approach-grid{grid-template-columns:1fr 1fr;}.approach-item{border-bottom:1px solid var(--line);}}
+  @media (max-width:520px){.approach-grid{grid-template-columns:1fr;}}
+
+  /* ---------- CASE STUDIES ---------- */
+  .case{
+    border:1px solid var(--line);border-radius:var(--radius);background:#fff;margin-bottom:28px;
+    opacity:1;transform:translateY(0);transition:opacity .5s ease, transform .5s ease;
+  }
+  .case.pre{opacity:0;transform:translateY(16px);}
+  .case.pre.in{opacity:1;transform:translateY(0);}
+  .case-top{padding:30px 32px 24px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;}
+  .case-label{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--green);letter-spacing:0.06em;text-transform:uppercase;}
+  .case-top h3{font-size:23px;margin-top:8px;}
+  .case-problem{font-size:14.5px;color:var(--ink-soft);margin-top:10px;max-width:56ch;line-height:1.6;}
+  .case-tags{display:flex;gap:8px;flex-wrap:wrap;}
+  .case-tag{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:5px 10px;border:1px solid var(--line);border-radius:14px;color:var(--ink-soft);white-space:nowrap;}
+
+  .case-body{padding:28px 32px 32px;}
+  .metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-bottom:26px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .metric{padding:18px 16px;border-right:1px solid var(--line);}
+  .metric:last-child{border-right:none;}
+  .metric .num{font-family:'Spectral',serif;font-size:26px;font-weight:600;color:var(--ink);}
+  .metric .label{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-soft);letter-spacing:0.04em;text-transform:uppercase;margin-top:4px;}
+  @media (max-width:640px){.metrics-row{grid-template-columns:1fr 1fr;}.metric{border-bottom:1px solid var(--line);}}
+
+  .case-cols{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
+  @media (max-width:760px){.case-cols{grid-template-columns:1fr;}}
+  .col-title{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:12px;}
+  .action-list{list-style:none;margin:0;padding:0;}
+  .action-list li{font-size:14px;line-height:1.6;color:var(--ink);padding-left:20px;position:relative;margin-bottom:8px;}
+  .action-list li::before{content:"✓";position:absolute;left:0;color:var(--green);font-weight:600;}
+
+  .insight-box{
+    background:var(--amber-soft);border-left:3px solid var(--amber);padding:16px 18px;border-radius:var(--radius);
+    font-size:14px;line-height:1.6;color:#5c4419;
+  }
+  .insight-box strong{color:#3d2d10;}
+
+  .flag-box{
+    background:var(--red-soft);border-left:3px solid var(--red);padding:14px 18px;border-radius:var(--radius);
+    font-size:13.5px;line-height:1.6;color:#6b2323;margin-top:14px;
+  }
+
+  .deliverables{margin-top:22px;padding-top:20px;border-top:1px solid var(--line);display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  .deliverables span.lbl{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.05em;margin-right:4px;}
+  .file-chip{font-family:'IBM Plex Mono',monospace;font-size:12px;padding:6px 11px;background:var(--paper-alt);border:1px solid var(--line);border-radius:3px;color:var(--ink);}
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:48px;}
+  @media (max-width:760px){.about-grid{grid-template-columns:1fr;}}
+  .about-bio p{font-size:15.5px;line-height:1.75;color:var(--ink-soft);margin-top:14px;}
+  .about-bio p:first-child{margin-top:0;}
+  .fact-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line);}
+  .fact-list li{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line);font-size:13.5px;}
+  .fact-list .k{font-family:'IBM Plex Mono',monospace;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.04em;font-size:11.5px;}
+  .fact-list .v{color:var(--ink);text-align:right;}
+
+  /* ---------- CONTACT / FOOTER ---------- */
+  footer{padding:64px 0 48px;}
+  .contact-box{
+    background:var(--ink);color:var(--paper);border-radius:var(--radius);padding:48px 44px;
+    display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;
+  }
+  .contact-box h2{color:var(--paper);font-size:clamp(24px,3vw,32px);max-width:16ch;}
+  .contact-box p{color:#B8C0CE;font-size:14px;margin-top:10px;max-width:38ch;line-height:1.6;}
+  .contact-box .btn-solid{background:var(--amber);border-color:var(--amber);color:#1c1200;}
+  .contact-box .btn-solid:hover{background:#E9AF4C;}
+  .foot-meta{margin-top:28px;display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-soft);flex-wrap:wrap;gap:8px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;animation:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="nav-mark">J. TERZULUM // DATA</div>
+    <div class="nav-links">
+      <a href="#work">Case Studies</a>
+      <a href="#approach">Approach</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Data Analyst — Makurdi, Benue State, Nigeria</div>
+    <h1 class="headline">I turn messy spreadsheets into <em>answers you can trust.</em></h1>
+    <p class="sub">I clean, audit, and report on business data across Excel, Google Sheets, Power BI, SQL and Python — catching the errors, duplicates, and inconsistencies that quietly break decisions, before they reach you.</p>
+    <div class="cta-row">
+      <a href="#work" class="btn btn-solid">View case studies</a>
+      <a href="mailto:utojustine@gmail.com" class="btn btn-outline">Email me</a>
+    </div>
+
+    <div class="ledger" id="ledger">
+      <div class="ledger-head">
+        <div>Field</div><div>Raw Value</div><div>After Cleaning</div><div>Status</div>
+      </div>
+      <div class="ledger-row" data-delay="0">
+        <div class="mono">Region</div>
+        <div class="cell-before mono">"  MAKURDI"</div>
+        <div class="cell-after mono">Makurdi</div>
+        <div><span class="status-pill mono"></span></div>
+      </div>
+      <div class="ledger-row" data-delay="1">
+        <div class="mono">BasicSalary</div>
+        <div class="cell-before mono">"₦120,000"</div>
+        <div class="cell-after mono">120000</div>
+        <div><span class="status-pill mono"></span></div>
+      </div>
+      <div class="ledger-row" data-delay="2">
+        <div class="mono">HireDate</div>
+        <div class="cell-before mono">13/02/2025</div>
+        <div class="cell-after mono">2025-02-13</div>
+        <div><span class="status-pill mono"></span></div>
+      </div>
+      <div class="ledger-row review" data-delay="3">
+        <div class="mono">TotalAmount</div>
+        <div class="cell-before mono">110,200 ≠ exp.</div>
+        <div class="cell-after mono">flagged for review</div>
+        <div><span class="status-pill mono"></span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="skills">
+  <div class="wrap">
+    <div class="skills-row">
+      <span class="skill-tag mono">Excel</span>
+      <span class="skill-tag mono">Google Sheets</span>
+      <span class="skill-tag mono">Power BI</span>
+      <span class="skill-tag mono">SQL</span>
+      <span class="skill-tag mono">Python · pandas</span>
+    </div>
+  </div>
+</div>
+
+<section id="approach">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow" style="margin-bottom:0;">How I work</div>
+      <h2>A repeatable process, not guesswork</h2>
+    </div>
+    <div class="approach-grid">
+      <div class="approach-item">
+        <div class="approach-num mono">01</div>
+        <h3>Load &amp; Diagnose</h3>
+        <p>Load the raw file and profile it — row counts, formats, and every inconsistency, before touching anything.</p>
+      </div>
+      <div class="approach-item">
+        <div class="approach-num mono">02</div>
+        <h3>Clean &amp; Standardize</h3>
+        <p>Fix formats, casing, and duplicates using repeatable, documented logic — never manual one-off edits.</p>
+      </div>
+      <div class="approach-item">
+        <div class="approach-num mono">03</div>
+        <h3>Audit &amp; Flag</h3>
+        <p>Catch what shouldn't be silently fixed — conflicting IDs, mismatched totals — and flag it for your review.</p>
+      </div>
+      <div class="approach-item">
+        <div class="approach-num mono">04</div>
+        <h3>Report &amp; Deliver</h3>
+        <p>Hand over a clean dataset plus a plain-language summary of what changed and what it means for you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow" style="margin-bottom:0;">Selected work</div>
+      <h2>Case studies</h2>
+      <p class="sub" style="margin-top:14px;">Three self-directed training projects, each built on a realistic messy dataset to demonstrate the full cleaning-to-reporting workflow.</p>
+    </div>
+
+    <!-- CASE 1 -->
+    <div class="case">
+      <div class="case-top">
+        <div>
+          <div class="case-label mono">Case Study 01 — Sales</div>
+          <h3>Lubricant Sales Tracker</h3>
+          <p class="case-problem">A 288-row sales export with four mixed date formats, inconsistent region/product naming, duplicate transactions, and silent calculation errors.</p>
+        </div>
+        <div class="case-tags">
+          <span class="case-tag">SQL</span>
+          <span class="case-tag">Python</span>
+          <span class="case-tag">pandas</span>
+        </div>
+      </div>
+      <div class="case-body">
+        <div class="metrics-row">
+          <div class="metric"><div class="num mono">288→280</div><div class="label">Rows after cleanup</div></div>
+          <div class="metric"><div class="num mono">15</div><div class="label">Duplicates removed</div></div>
+          <div class="metric"><div class="num mono">12</div><div class="label">Calc errors flagged</div></div>
+          <div class="metric"><div class="num mono">4→1</div><div class="label">Date formats unified</div></div>
+        </div>
+        <div class="case-cols">
+          <div>
+            <div class="col-title">What I did</div>
+            <ul class="action-list">
+              <li>Built a custom parser to standardize 4 mixed date formats</li>
+              <li>Normalized Region, Sales Rep and Product text fields</li>
+              <li>Identified and removed exact duplicate transactions</li>
+              <li>Audited every row's total against Quantity × Unit Price</li>
+            </ul>
+          </div>
+          <div>
+            <div class="col-title">What it found</div>
+            <div class="insight-box"><strong>Gboko outperformed Makurdi</strong> in total revenue — the opposite of what raw, uncleaned data initially suggested — a finding only visible once duplicates and formatting errors were removed.</div>
+          </div>
+        </div>
+        <div class="deliverables">
+          <span class="lbl mono">Deliverables</span>
+          <span class="file-chip">cleaned_sales_data.csv</span>
+          <span class="file-chip">Sales_Data_Cleaning_Report.docx</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASE 2 -->
+    <div class="case">
+      <div class="case-top">
+        <div>
+          <div class="case-label mono">Case Study 02 — HR &amp; Payroll</div>
+          <h3>Employee &amp; Payroll Records</h3>
+          <p class="case-problem">166 employee records with currency-formatted salaries, inconsistent categorical fields, and — critically — Employee IDs shared by different people.</p>
+        </div>
+        <div class="case-tags">
+          <span class="case-tag">Python</span>
+          <span class="case-tag">pandas</span>
+          <span class="case-tag">Regex</span>
+        </div>
+      </div>
+      <div class="case-body">
+        <div class="metrics-row">
+          <div class="metric"><div class="num mono">166→160</div><div class="label">Rows after cleanup</div></div>
+          <div class="metric"><div class="num mono">6</div><div class="label">True duplicates removed</div></div>
+          <div class="metric"><div class="num mono">17</div><div class="label">ID conflicts flagged</div></div>
+          <div class="metric"><div class="num mono">9</div><div class="label">Payroll errors flagged</div></div>
+        </div>
+        <div class="case-cols">
+          <div>
+            <div class="col-title">What I did</div>
+            <ul class="action-list">
+              <li>Parsed currency-formatted salaries (₦, NGN, commas) into numbers</li>
+              <li>Standardized Gender, Department and Status fields</li>
+              <li>Separated true duplicate entries from genuine ID conflicts</li>
+              <li>Audited Net Pay against Basic + Allowance − Deductions</li>
+            </ul>
+          </div>
+          <div>
+            <div class="col-title">What it found</div>
+            <div class="insight-box"><strong>Not every duplicate is the same problem.</strong> Some IDs were one employee entered twice — safe to merge. Others were two different employees sharing one ID — a real payroll risk that needed a human decision, not an automated fix.</div>
+            <div class="flag-box">17 rows deliberately left untouched and handed back for HR review, rather than auto-resolved.</div>
+          </div>
+        </div>
+        <div class="deliverables">
+          <span class="lbl mono">Deliverables</span>
+          <span class="file-chip">cleaned_hr_data.csv</span>
+          <span class="file-chip">employee_id_conflicts_FLAGGED.csv</span>
+          <span class="file-chip">HR_Payroll_Cleaning_Report.docx</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASE 3 -->
+    <div class="case">
+      <div class="case-top">
+        <div>
+          <div class="case-label mono">Case Study 03 — Inventory</div>
+          <h3>Warehouse Stock Ledger</h3>
+          <p class="case-problem">207 SKU records across 3 warehouses with inconsistent cost formatting, duplicate SKUs, a physically impossible negative stock quantity, and stock valuation errors.</p>
+        </div>
+        <div class="case-tags">
+          <span class="case-tag">Python</span>
+          <span class="case-tag">pandas</span>
+          <span class="case-tag">Logic checks</span>
+        </div>
+      </div>
+      <div class="case-body">
+        <div class="metrics-row">
+          <div class="metric"><div class="num mono">207→194</div><div class="label">Rows after cleanup</div></div>
+          <div class="metric"><div class="num mono">26</div><div class="label">Duplicate SKUs removed</div></div>
+          <div class="metric"><div class="num mono">14</div><div class="label">Stock value errors flagged</div></div>
+          <div class="metric"><div class="num mono">1</div><div class="label">Negative stock flagged</div></div>
+        </div>
+        <div class="case-cols">
+          <div>
+            <div class="col-title">What I did</div>
+            <ul class="action-list">
+              <li>Converted mixed-format Unit Cost values to consistent numbers</li>
+              <li>Standardized Category, Unit and Warehouse fields</li>
+              <li>Built a logic check matching product name to expected category</li>
+              <li>Flagged a negative stock quantity rather than silently correcting it</li>
+            </ul>
+          </div>
+          <div>
+            <div class="col-title">What it found</div>
+            <div class="insight-box"><strong>₦177.1M</strong> in total cleaned inventory value across 3 warehouses, with <strong>Lubricants</strong> alone accounting for nearly 30% — plus 14 items sitting below their reorder level, ready for a restocking decision.</div>
+          </div>
+        </div>
+        <div class="deliverables">
+          <span class="lbl mono">Deliverables</span>
+          <span class="file-chip">cleaned_inventory_data.csv</span>
+          <span class="file-chip">negative_stock_FLAGGED.csv</span>
+          <span class="file-chip">Inventory_Cleaning_Report.docx</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div>
+        <div class="eyebrow" style="margin-bottom:0;">About</div>
+        <h2 style="margin-top:8px;font-size:28px;">Justin Terzulum</h2>
+        <div class="about-bio">
+          <p>I'm a Makurdi-based data analyst building deep, practical expertise across Excel, Google Sheets, Power BI, SQL and Python — with an accounting background that shapes how I think about numbers: they should always reconcile, and when they don't, that's the story worth telling.</p>
+          <p>I prefer independent, home-based work, and I'm currently building out a freelance practice focused on data cleaning, reporting, and dashboarding for small and growing businesses.</p>
+        </div>
+      </div>
+      <div>
+        <ul class="fact-list">
+          <li><span class="k mono">Location</span><span class="v">Makurdi, Benue State, Nigeria</span></li>
+          <li><span class="k mono">Education</span><span class="v">B.Sc Accounting — Imo State University Owerri<br>Diploma — Federal Polytechnic Bali</span></li>
+          <li><span class="k mono">Core tools</span><span class="v">Excel · Google Sheets · Power BI</span></li>
+          <li><span class="k mono">Extended tools</span><span class="v">SQL · Python (pandas)</span></li>
+          <li><span class="k mono">Availability</span><span class="v">Freelance, remote / home-based</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="contact-box">
+      <div>
+        <h2>Have messy data sitting in a spreadsheet somewhere?</h2>
+        <p>Send it over — I'll tell you honestly what's wrong with it before I tell you what I'd charge to fix it.</p>
+      </div>
+      <a href="mailto:utojustine@gmail.com" class="btn btn-solid">utojustine@gmail.com</a>
+    </div>
+    <div class="foot-meta">
+      <span>© 2026 Justin Terzulum</span>
+      <span>Makurdi, Benue State, Nigeria</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Animate ledger rows in hero on load, one after another
+  document.addEventListener('DOMContentLoaded', () => {
+    const rows = document.querySelectorAll('#ledger .ledger-row');
+    rows.forEach(row => {
+      const delay = parseInt(row.getAttribute('data-delay'), 10) * 550 + 400;
+      setTimeout(() => row.classList.add('done'), delay);
+    });
+  });
+
+  // Reveal case study cards on scroll (progressive enhancement —
+  // cards are visible by default in CSS; only add the pre-animation
+  // state here, after JS has confirmed it's running)
+  const cases = document.querySelectorAll('.case');
+  if ('IntersectionObserver' in window) {
+    cases.forEach(c => c.classList.add('pre'));
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    cases.forEach(c => io.observe(c));
+  }
+</script>
+
+</body>
+</html>
